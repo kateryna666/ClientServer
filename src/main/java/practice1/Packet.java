@@ -1,6 +1,8 @@
 package practice1;
 
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.util.Objects;
 
 public class Packet {
     private byte bMagic = 0x13;
@@ -12,12 +14,13 @@ public class Packet {
     private short wCrc16_2;
 
     public Packet(byte[] bytes){
-        if(bytes[0] ==0x13 ){
+        if(bytes[0] !=0x13 ){
             throw new NumberFormatException();
         }
         ByteBuffer buffer = ByteBuffer.wrap(bytes);
         buffer.get();
         this.bSrc = buffer.get();
+        buffer.order(ByteOrder.BIG_ENDIAN);
         this.bPktId = buffer.getLong();
         this.wLen = buffer.getInt();
         this.wCrc16 = buffer.getShort();
@@ -28,6 +31,7 @@ public class Packet {
         }
     }
     public Packet(byte bSrc, long bPktId, Massage bMsg){
+
         this.bSrc = bSrc;
         this.bPktId = bPktId;
         this.wLen = bMsg.length();
@@ -50,13 +54,14 @@ public class Packet {
         byte[] massage = ByteBuffer.allocate(wLen)
                     .put(this.bMsg.toByte())
                     .array();
-            return genCRC(massage);
+        return genCRC(massage);
     }
 
     byte[] toByte(){
-        return ByteBuffer.allocate(1+1+8+4+2+this.wLen+2)
-                .put((byte) 0x13)
-                .put((byte) this.bSrc)
+       return ByteBuffer.allocate(1+1+8+4+2+this.wLen+2)
+               .order(ByteOrder.BIG_ENDIAN)
+                .put(this.bMagic)
+                .put(this.bSrc)
                 .putLong(this.bPktId)
                 .putInt(this.wLen)
                 .putShort(this.wCrc16)
@@ -105,6 +110,25 @@ public class Packet {
             crc = (crc >>> 8) ^ table[(crc ^ b) & 0xff];
         }
         return (short) crc;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Packet packet = (Packet) o;
+        return bMagic == packet.bMagic &&
+                bSrc == packet.bSrc &&
+                bPktId == packet.bPktId &&
+                wLen == packet.wLen &&
+                wCrc16 == packet.wCrc16 &&
+                wCrc16_2 == packet.wCrc16_2 &&
+                Objects.equals(bMsg, packet.bMsg);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(bMagic, bSrc, bPktId, wLen, wCrc16, bMsg, wCrc16_2);
     }
 
     @Override
