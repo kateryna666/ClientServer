@@ -22,11 +22,16 @@ public class PacketBuilder {
     }
 
     public static void main(String[] args) {
-        Massage massage = new Massage(1, 2, new byte[]{3,4,5});
-        Packet packet = new Packet((byte) 6,7, massage);
-        PacketBuilder packetBuilder = new PacketBuilder();
-        System.out.println(packetBuilder.encode(packet).length);
-        System.out.println(new String(packetBuilder.encode(packet)));
+        try {
+            Massage massage = new Massage(1, 2, new byte[]{3,4,5});
+            Packet packet = new Packet((byte) 6,7, massage);
+            PacketBuilder packetBuilder = new PacketBuilder();
+            System.out.println(packetBuilder.encode(packet).length);
+            System.out.println(new String(packetBuilder.encode(packet)));
+        }catch (RuntimeException e){
+            System.out.println("Nothing work(((");
+        }
+
 
     }
 
