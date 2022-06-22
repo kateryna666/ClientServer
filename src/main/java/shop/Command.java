@@ -1,0 +1,11 @@
+package shop;
+
+public enum Command {
+    PRODUCT_CREATE,
+    PRODUCT_INCREASE,
+    PRODUCT_DECREASE,
+    PRODUCT_PRICE,
+    PRODUCT_AMOUNT,
+    GROUP_CREATE,
+    ANSWER_OK
+}
