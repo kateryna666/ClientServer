@@ -1,12 +1,12 @@
-package practice1;
+package architecture;
 
+import packege.Packet;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
@@ -14,28 +14,23 @@ import java.security.NoSuchAlgorithmException;
 public class PacketBuilder {
     final static String KEY= "sfjskfdksfldqwer";
 
-    public byte[] encode(Packet packet) {
-        return cryption(packet.toByte(), true);
+    public static void encode(Packet packet) {
+        Sender.sendMessage(cryption(packet.toByte(), true),
+                packet.getbMessage().getbUserId());
 
     }
-    public Packet decode(byte[] bytes){
+    public static void decode(byte[] bytes){
+        try {
+            Processor.process(new Packet(cryption(bytes, false)));
+        }catch (NumberFormatException e){
+            return;
+        }
 
-        return new Packet(cryption(bytes, false));
 
     }
 
-    public static void main(String[] args) {
-            Massage massage = new Massage(1, 2, new byte[]{3,4,5});
-            Packet packet = new Packet((byte) 6,7, massage);
-            PacketBuilder packetBuilder = new PacketBuilder();
-            byte[] test = packetBuilder.encode(packet);
-            System.out.println(test.length);
-            System.out.println(new String(test));
-            System.out.println(packetBuilder.decode(test).toByte().length);
-            System.out.println(packetBuilder.decode(test));
-    }
 
-    private byte[] cryption(byte[] packet, boolean encryptMode){
+    private static byte[] cryption(byte[] packet, boolean encryptMode) throws RuntimeException {
 
         try {
             Cipher cipher = Cipher.getInstance("AES");
@@ -62,15 +57,11 @@ public class PacketBuilder {
                     .putShort( buffer.getShort(packet.length - Short.BYTES));
             return res;
 
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        } catch (NoSuchPaddingException e) {
-            throw new RuntimeException(e);
-        } catch (InvalidKeyException e) {
-            throw new RuntimeException(e);
-        } catch (BadPaddingException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalBlockSizeException e) {
+        } catch (NoSuchAlgorithmException
+                | NoSuchPaddingException
+                | InvalidKeyException
+                | BadPaddingException
+                | IllegalBlockSizeException e) {
             throw new RuntimeException(e);
         }
 

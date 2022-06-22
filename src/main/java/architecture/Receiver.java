@@ -1,4 +1,4 @@
-package practice1;
+package architecture;
 
 public interface Receiver {
     void receiveMassage();

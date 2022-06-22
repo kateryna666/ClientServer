@@ -1,17 +1,9 @@
-package practice1;
+package architecture;
 import org.json.JSONObject;
 
 import java.util.Random;
 
 public class FakeReceiver implements Receiver {
-
-    enum COMMANDS{
-        getAmount,
-        addProduct,
-        addGroup,
-        enrollProducts,
-        delistProduct
-    }
 
     public static String[] PRODUCTS = new String[]{
             "Apples",

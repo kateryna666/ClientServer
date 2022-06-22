@@ -1,4 +1,4 @@
-package practice1;
+package architecture;
 
 public class MagicBitwise {
     static final int

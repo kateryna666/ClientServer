@@ -1,4 +1,4 @@
-package practice1;
+package shop;
 
 public class ProductGroup {
     private int id;

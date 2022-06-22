@@ -1,4 +1,4 @@
-package practice1;
+package packege;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -10,7 +10,7 @@ public class Packet {
     private long bPktId;
     private int wLen;
     private short wCrc16;
-    private Massage bMsg;
+    private Message bMsg;
     private short wCrc16_2;
 
     public Packet(byte[] bytes){
@@ -24,13 +24,13 @@ public class Packet {
         this.bPktId = buffer.getLong();
         this.wLen = buffer.getInt();
         this.wCrc16 = buffer.getShort();
-        this.bMsg = new Massage(buffer, wLen);
+        this.bMsg = new Message(buffer, wLen);
         this.wCrc16_2 = buffer.getShort();
         if(makeCRC1()!=this.wCrc16&&makeCRC2()!=this.wCrc16_2) {
             throw new IllegalStateException();
         }
     }
-    public Packet(byte bSrc, long bPktId, Massage bMsg){
+    public Packet(byte bSrc, long bPktId, Message bMsg){
 
         this.bSrc = bSrc;
         this.bPktId = bPktId;
@@ -44,6 +44,17 @@ public class Packet {
         return wLen;
     }
 
+    public byte getbSrc() {
+        return bSrc;
+    }
+
+    public long getbPktId() {
+        return bPktId;
+    }
+
+    public Message getbMessage() {
+        return bMsg;
+    }
 
     private short makeCRC1(){
         byte[] header = ByteBuffer.allocate(14).put(this.bMagic).put(this.bSrc).putLong(bPktId).putInt(wLen).array();
@@ -57,7 +68,7 @@ public class Packet {
         return genCRC(massage);
     }
 
-    byte[] toByte(){
+    public byte[] toByte(){
        return ByteBuffer.allocate(1+1+8+4+2+this.wLen+2)
                .order(ByteOrder.BIG_ENDIAN)
                 .put(this.bMagic)
