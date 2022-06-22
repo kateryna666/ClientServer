@@ -21,12 +21,10 @@ public class PacketBuilder {
     public Packet decode(byte[] bytes){
 
         return new Packet(cryption(bytes, false));
-        //return new Packet(bytes);
+
     }
 
     public static void main(String[] args) {
-        /*try {*/
-
             Massage massage = new Massage(1, 2, new byte[]{3,4,5});
             Packet packet = new Packet((byte) 6,7, massage);
             PacketBuilder packetBuilder = new PacketBuilder();
@@ -35,12 +33,6 @@ public class PacketBuilder {
             System.out.println(new String(test));
             System.out.println(packetBuilder.decode(test).toByte().length);
             System.out.println(packetBuilder.decode(test));
-
-        /*}catch (RuntimeException e){
-            System.out.println("Nothing work(((");
-        }*/
-
-
     }
 
     private byte[] cryption(byte[] packet, boolean encryptMode){
