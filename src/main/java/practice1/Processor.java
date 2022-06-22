@@ -10,6 +10,7 @@ public class Processor {
     public void process(Massage massage){
         //write synchronized blocs
         //manage process
+        //manage process
     }
 
     private void getAmount(String productName, long bPktId){
