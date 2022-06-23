@@ -30,7 +30,7 @@ public class PacketBuilder {
     }
 
 
-    private static byte[] cryption(byte[] packet, boolean encryptMode) throws RuntimeException {
+    protected static byte[] cryption(byte[] packet, boolean encryptMode) throws RuntimeException {
 
         try {
             Cipher cipher = Cipher.getInstance("AES");

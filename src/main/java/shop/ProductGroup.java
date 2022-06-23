@@ -23,4 +23,12 @@ public class ProductGroup {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public String toString() {
+        return "ProductGroup{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

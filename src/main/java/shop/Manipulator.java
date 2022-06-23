@@ -1,6 +1,8 @@
 package shop;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 
 public class Manipulator {
@@ -10,6 +12,8 @@ public class Manipulator {
     public static void getAmount(String productName) {
         Product product = findProduct(productName);
         if(product!=null) System.out.println(product);
+        System.out.println(Arrays.toString(groups.toArray()));
+        System.out.println(Arrays.toString(products.toArray()));
     }
 
     public static void addProduct(String productName, String toGroup) {
@@ -17,11 +21,15 @@ public class Manipulator {
             addGroup(toGroup);
         if (findProduct(productName)==null)
             products.add(new Product(findGroup(toGroup).getId(), productName));
+        System.out.println(Arrays.toString(groups.toArray()));
+        System.out.println(Arrays.toString(products.toArray()));
     }
 
     public static void addGroup(String groupName) {
         if (findGroup(groupName) == null)
             groups.add(new ProductGroup(groupName));
+        System.out.println(Arrays.toString(groups.toArray()));
+        System.out.println(Arrays.toString(products.toArray()));
     }
 
 
@@ -30,8 +38,8 @@ public class Manipulator {
         if(index>-1){
             products.get(index).setAmount(products.get(index).getAmount() + amount);
         }
-
-
+        System.out.println(Arrays.toString(groups.toArray()));
+        System.out.println(Arrays.toString(products.toArray()));
     }
 
     public static void derollProduct(String productName, int amount) {
@@ -41,13 +49,16 @@ public class Manipulator {
             if (newAmount >= 0)
                 products.get(index).setAmount(newAmount);
         }
+        System.out.println(Arrays.toString(groups.toArray()));
+        System.out.println(Arrays.toString(products.toArray()));
     }
 
     public static void setPrice(String productName, int newPrice) {
         int index = indexProduct(productName);
         if(index>-1)
             products.get(index).setPrise(newPrice);
-
+        System.out.println(Arrays.toString(groups.toArray()));
+        System.out.println(Arrays.toString(products.toArray()));
     }
 
     private static Product findProduct(String productName) {
