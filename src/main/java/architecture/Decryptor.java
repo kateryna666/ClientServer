@@ -6,11 +6,12 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 
-public class Decryptor {
+public class Decryptor extends Thread{
     final static BlockingQueue<Packet> queuePackets = new ArrayBlockingQueue<>(20);
 
+    public Decryptor(){ start();}
+
     public void decrypt(){
-        new Thread(()->{
             try {
                 int i = 0;
                 while (true) {
@@ -24,7 +25,9 @@ public class Decryptor {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
-        }).start();
+    }
+    @Override
+    public void run() {
+        decrypt();
     }
 }

@@ -11,11 +11,11 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 
-public class Processor {
+public class Processor extends Thread{
     final static BlockingQueue<Packet> queueProcessor = new ArrayBlockingQueue<>(20);
 
+    public Processor(){start();}
     public void process() {
-        new Thread(()->{
             try {
                 int i = 0;
                 while (true) {
@@ -86,8 +86,6 @@ public class Processor {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
-        }).start();
     }
 
 
@@ -96,6 +94,10 @@ public class Processor {
         final String ANSWER = "Ok";
         Message answerMessage = new Message(Command.ANSWER_OK.ordinal(), packet.getbMessage().getbUserId(), ANSWER.getBytes());
         return new Packet(packet.getbSrc(), packet.getbPktId(), answerMessage);
+    }
+    @Override
+    public void run() {
+        process();
     }
 
 }
