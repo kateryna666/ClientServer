@@ -14,23 +14,18 @@ import java.security.NoSuchAlgorithmException;
 public class PacketBuilder {
     final static String KEY= "sfjskfdksfldqwer";
 
-    public static void encode(Packet packet) {
-        Sender.sendMessage(cryption(packet.toByte(), true),
-                packet.getbMessage().getbUserId());
+    public static byte[] encode(Packet packet) {
+        /*Sender.sendMessage(cryption(packet.toByte(), true),
+                packet.getbMessage().getbUserId());*/
+        return cryption(packet.toByte(), true);
 
     }
-    public static void decode(byte[] bytes){
-        try {
-            Processor.process(new Packet(cryption(bytes, false)));
-        }catch (NumberFormatException e){
-            return;
-        }
-
-
+    public static Packet decode(byte[] bytes){
+            return new Packet(cryption(bytes, false));
     }
 
 
-    protected static byte[] cryption(byte[] packet, boolean encryptMode) throws RuntimeException {
+    public static byte[] cryption(byte[] packet, boolean encryptMode) throws RuntimeException {
 
         try {
             Cipher cipher = Cipher.getInstance("AES");

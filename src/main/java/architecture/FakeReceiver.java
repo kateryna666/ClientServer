@@ -63,7 +63,7 @@ public class FakeReceiver implements Receiver {
 
 
     @Override
-    public void receiveMassage() {
+    public void receiveMassage(byte[] packet) {
         PacketBuilder.decode(generatePacket());
 
     }
