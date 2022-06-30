@@ -11,6 +11,8 @@ public class ServerReceiver implements Receiver{
 
             try {
                 queueBytes.put(packet);
+                System.out.println("Rec "+packet.toString());
+                //todo queue from server
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
