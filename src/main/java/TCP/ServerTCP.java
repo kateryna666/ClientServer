@@ -6,13 +6,14 @@ import java.net.Socket;
 
 public class ServerTCP {
     static final int PORT = 8081;
+    protected static boolean die = false;
 
     public static void main(String[] args) throws IOException {
         ServerSocket s = new ServerSocket(PORT);
         System.out.println("Server has been launched.");
 
         try {
-            while (true) {
+            while (!die) {
                 Socket socket = s.accept();
                 try {
                     new ServerOneTCP(socket);

@@ -11,10 +11,12 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 //todo переробити branch_v2 з Map<Long, Pair<InetAddress, Integer>> clientMap
+// Без шифрування працює - закоментити encoder;
 public class ServerUDP {
     static final int PORT = 8082;
     static byte[] receiveData = null;
-    static final int BUFFER_SIZE = 128;
+    static final int BUFFER_SIZE = 1024;
+    protected static boolean die = false;
     public static DatagramSocket serverSocket;
     static {
         try {
@@ -28,7 +30,7 @@ public class ServerUDP {
     {
         System.out.println(" Started UDP server ");
         try {
-            while (true) {
+            while (!die) {
                 receiveData = new byte[BUFFER_SIZE];
                 DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
                 serverSocket.receive(receivePacket);

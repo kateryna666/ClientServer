@@ -20,7 +20,7 @@ public class ClientOneUPD extends Thread{
             DatagramSocket clientSocket = new DatagramSocket();
             InetAddress IPAddress = InetAddress.getByName("localhost");
 
-            byte[] receiveData = new byte[1028];
+            byte[] receiveData = new byte[ServerUDP.BUFFER_SIZE];
             byte[] sendData = FakeReceiver.generatePacket();
             System.out.println("Сокет відкрито");
             DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, ServerUDP.PORT);
