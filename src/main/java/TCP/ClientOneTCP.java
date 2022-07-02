@@ -1,6 +1,7 @@
 package TCP;
 
 import architecture.FakeReceiver;
+import architecture.PacketBuilder;
 import packege.Packet;
 
 import java.io.IOException;
@@ -29,7 +30,7 @@ public class ClientOneTCP extends Thread{
             }
             catch (IOException e) {
                 System.err.println("Couldn't connect to the server: " + i);
-                Thread.sleep(1000);
+                Thread.sleep(10);
                 if (i == MAX_TRIES - 1){
                     return;
                 }
@@ -61,9 +62,10 @@ public class ClientOneTCP extends Thread{
                 out.writeObject(packet);
                 out.flush();
 
-                byte[] response = (byte[]) in.readObject();
-                Packet receivedPackage = new Packet(response);
-                System.out.println("FROM SERVER:\n"+ receivedPackage);
+                byte[] response =(byte[]) in.readObject();
+                Packet receivedPackage = PacketBuilder.decode(response);
+                System.out.println("FROM SERVER:\n "+receivedPackage
+                        .toString());
             }
         }
         catch (IOException e) {

@@ -17,7 +17,6 @@ public class ServerTCP {
                 try {
                     new ServerOneTCP(socket);
                 } catch (IOException e) {
-                    //в разі невдачі закриваємо сокет
                     socket.close();
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();

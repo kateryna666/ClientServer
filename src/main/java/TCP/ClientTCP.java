@@ -4,14 +4,22 @@ import java.io.IOException;
 import java.net.InetAddress;
 
 public class ClientTCP {
-    static final int MAX_THREADS = 5;
+    static final int MAX_THREADS = 100;
 
     public static void main(String[] args) throws IOException, InterruptedException {
         InetAddress addr = InetAddress.getByName("localhost");
         while (true) {
-            if (ClientOneTCP.threadCount() < MAX_THREADS)
-                new ClientOneTCP(addr);
-            Thread.sleep(100);
+            if (ClientOneTCP.threadCount() < MAX_THREADS) {
+                new Thread(() -> {
+                    for(int i = 0; i<100; i++) {
+                        try {
+                            new ClientOneTCP(addr);
+                        } catch (InterruptedException e) {
+
+                        }
+                    }
+                }).start();
+            }else break;
         }
     }
 }
