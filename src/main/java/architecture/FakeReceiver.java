@@ -26,7 +26,7 @@ public class FakeReceiver implements Receiver {
 
     public static byte[] generatePacket(){
         JSONObject json = new JSONObject();
-        Command command = Command.values()[new Random().nextInt(PRODUCTS.length-1)];
+        Command command = Command.values()[new Random().nextInt(Command.values().length-2)];
         json.put("command", command.ordinal());
         switch (command){
             case PRODUCT_AMOUNT -> {
@@ -50,9 +50,9 @@ public class FakeReceiver implements Receiver {
         }
         try {
             synchronized (pckId) {
-                return PacketBuilder.cryption(new Packet((byte) new Random().nextInt(Byte.MAX_VALUE),
+                return PacketBuilder.encode(new Packet((byte) new Random().nextInt(Byte.MAX_VALUE),
                         pckId++, new Massage(command.ordinal(),
-                        new Random().nextInt(), json.toString().getBytes("utf-8"))).toByte(), true);
+                        new Random().nextInt(), json.toString().getBytes("utf-8"))));
             }
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();

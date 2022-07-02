@@ -9,6 +9,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.Random;
 
 public class ClientOneTCP extends Thread{
 
@@ -30,7 +31,7 @@ public class ClientOneTCP extends Thread{
             }
             catch (IOException e) {
                 System.err.println("Couldn't connect to the server: " + i);
-                Thread.sleep(10);
+                Thread.sleep(new Random().nextInt(20));
                 if (i == MAX_TRIES - 1){
                     return;
                 }

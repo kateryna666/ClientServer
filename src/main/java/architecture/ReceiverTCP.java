@@ -1,5 +1,7 @@
 package architecture;
 
+import packege.Packet;
+
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.UnsupportedEncodingException;
@@ -16,7 +18,9 @@ public class ReceiverTCP implements Receiver {
     @Override
     public void receiveMassage() throws IOException {
         try {
-            Sender.sendMessage(PacketBuilder.encode(Processor.process(PacketBuilder.decode(recRackage))), out);
+            Packet packet = PacketBuilder.decode(recRackage);
+            if(packet!=null)
+                Sender.sendMessage(PacketBuilder.encode(Processor.process(packet)), out);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
