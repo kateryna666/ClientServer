@@ -4,15 +4,20 @@ import architecture.Decryptor;
 import architecture.Encryptor;
 import architecture.Processor;
 import architecture.Sender;
+import javafx.util.Pair;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ServerTCP {
-
+    public static Map<Long, Pair<InetAddress, Integer>> clientMap = new ConcurrentHashMap<>();
     public static final int PORT = 8081;
     public static final int CAPACITY = 100;
+    public boolean timeToStop = false;
     static Thread decryptor;
     static Thread[] processors = new Thread[CAPACITY/20+1];
     static Thread encryptor;

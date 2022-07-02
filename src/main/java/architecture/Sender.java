@@ -14,7 +14,6 @@ import java.util.concurrent.TimeUnit;
 
 public class Sender extends Thread {
     public Sender(){start();}
-    static List<byte[]> answers = new LinkedList<>();
     public void sendMessage() {
             try {
                 int target = 1000;
