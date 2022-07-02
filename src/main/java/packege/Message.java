@@ -1,6 +1,8 @@
 package packege;
 
 import org.json.JSONObject;
+import shop.Command;
+import shop.Manipulator;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -60,21 +62,14 @@ public class Message {
                 Arrays.equals(message, massage1.message);
     }
 
-/*
-    @Override
-    public int hashCode() {
-        int result = Objects.hash(cType, bUserId);
-        result = 31 * result + Arrays.hashCode(massage);
-        return result;
-    }
-*/
 
     @Override
     public String toString() {
+        JSONObject jsonObject = new JSONObject(new String(message));
         return "Message{" +
-                "cType=" + cType +
+                "cType=" + Command.values()[cType] +
                 ", bUserId=" + bUserId +
-                ", message=" + Arrays.toString(message) +
+                ", message=" + jsonObject.toString() +
                 '}';
     }
 }

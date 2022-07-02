@@ -6,8 +6,8 @@ import java.util.Arrays;
 import java.util.Objects;
 
 public class Manipulator {
-    public static ArrayList<ProductGroup> groups = new ArrayList<>();
-    public static ArrayList<Product> products = new ArrayList<>();
+    public static final ArrayList<ProductGroup> groups = new ArrayList<>();
+    public static final ArrayList<Product> products = new ArrayList<>();
 
     public static void getAmount(String productName) {
         Product product = findProduct(productName);

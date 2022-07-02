@@ -7,7 +7,7 @@ import shop.Command;
 import java.io.UnsupportedEncodingException;
 import java.util.Random;
 
-public class FakeReceiver implements Receiver {
+public class FakeReceiver {
     public static Long pckId= 0L;
     private static final int MAXPRICE = 20000;
     private static final int MAXAMOUNT = 200;
@@ -60,11 +60,8 @@ public class FakeReceiver implements Receiver {
         return null;
     }
 
-
-
-    @Override
-    public void receiveMassage(byte[] packet) {
+    /*public void receiveMassage(byte[] packet) {
         PacketBuilder.decode(generatePacket());
 
-    }
+    }*/
 }

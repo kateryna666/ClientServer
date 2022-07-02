@@ -15,12 +15,9 @@ public class PacketBuilder {
     final static String KEY= "sfjskfdksfldqwer";
 
     public static byte[] encode(Packet packet) {
-        /*Sender.sendMessage(cryption(packet.toByte(), true),
-                packet.getbMessage().getbUserId());*/
         return cryption(packet.toByte(), true);
-
     }
-    public static Packet decode(byte[] bytes){
+    public static Packet decode(byte[] bytes) throws NumberFormatException, IllegalStateException{
             return new Packet(cryption(bytes, false));
     }
 
