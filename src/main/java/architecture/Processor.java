@@ -6,11 +6,13 @@ import packege.Packet;
 import shop.Command;
 import shop.Manipulator;
 
+import java.io.UnsupportedEncodingException;
+
 
 public class Processor {
 
 
-    public static void process(Packet packet) {
+    public static Packet process(Packet packet) throws UnsupportedEncodingException {
         Message message = packet.getbMessage();
         Command command = Command.values()[message.getcType()];
 
@@ -65,13 +67,14 @@ public class Processor {
                 }
             }
         }
-        PacketBuilder.encode(answer(packet));
+        return answer(packet);
     }
 
-    static Packet answer(Packet packet) {
+    static Packet answer(Packet packet) throws UnsupportedEncodingException {
 
-        String answer = "Ok";
-        Message answerMessage = new Message(Command.ANSWER_OK.ordinal(), packet.getbMessage().getbUserId(), answer.getBytes());
+        String ANSWER = "Ok";
+        Message answerMessage = new Message(Command.ANSWER_OK.ordinal(), packet.getbMessage().getbUserId(),
+                new JSONObject().put("Answer", ANSWER).toString().getBytes("utf-8"));
         return new Packet(packet.getbSrc(), packet.getbPktId(), answerMessage);
     }
 

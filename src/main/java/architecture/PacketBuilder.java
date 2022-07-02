@@ -14,19 +14,19 @@ import java.security.NoSuchAlgorithmException;
 public class PacketBuilder {
     final static String KEY= "sfjskfdksfldqwer";
 
-    public static void encode(Packet packet) {
-        Sender.sendMessage(cryption(packet.toByte(), true),
-                packet.getbMessage().getbUserId());
+    public static byte[] encode(Packet packet) {
+        /*Sender.sendMessage(cryption(packet.toByte(), true),
+                packet.getbMessage().getbUserId());*/
+        return cryption(packet.toByte(), true);
 
     }
-    public static void decode(byte[] bytes){
+    public static Packet decode(byte[] bytes){
         try {
-            Processor.process(new Packet(cryption(bytes, false)));
-        }catch (NumberFormatException e){
-            return;
+            return new Packet(cryption(bytes, false));
+        }catch (NumberFormatException | IllegalStateException e){
+            System.err.println("Illegal package");
         }
-
-
+        return null;
     }
 
 

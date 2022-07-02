@@ -1,6 +1,7 @@
 package packege;
 
 import org.json.JSONObject;
+import shop.Command;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -12,14 +13,15 @@ public class Message {
     private int bUserId;
     private byte[] message;
 
-    public Message(ByteBuffer buffer, int wLen){
+    public Message(ByteBuffer buffer, int wLen) {
         buffer.order(ByteOrder.BIG_ENDIAN);
         this.cType = buffer.getInt();
         this.bUserId = buffer.getInt();
-        this.message = new byte[wLen - Integer.BYTES*2];
-        buffer.get(this.message, 0, wLen - Integer.BYTES*2);
+        this.message = new byte[wLen - Integer.BYTES * 2];
+        buffer.get(this.message, 0, wLen - Integer.BYTES * 2);
     }
-    public Message(int cType, int bUserId, byte[] message ){
+
+    public Message(int cType, int bUserId, byte[] message) {
 
         this.cType = cType;
         this.bUserId = bUserId;
@@ -38,10 +40,11 @@ public class Message {
         return message;
     }
 
-    int length(){
-        return Integer.BYTES*2+this.message.length;
+    int length() {
+        return Integer.BYTES * 2 + this.message.length;
     }
-    byte[] toByte(){
+
+    byte[] toByte() {
         return ByteBuffer.allocate(this.length())
                 .order(ByteOrder.BIG_ENDIAN)
                 .putInt(this.cType)
@@ -71,10 +74,11 @@ public class Message {
 
     @Override
     public String toString() {
+        JSONObject jsonObject = new JSONObject(new String(message));
         return "Message{" +
-                "cType=" + cType +
+                "cType=" + Command.values()[cType] +
                 ", bUserId=" + bUserId +
-                ", message=" + Arrays.toString(message) +
+                ", message=" + jsonObject.toString() +
                 '}';
     }
 }

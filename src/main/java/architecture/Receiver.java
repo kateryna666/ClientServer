@@ -1,5 +1,7 @@
 package architecture;
 
+import java.io.IOException;
+
 public interface Receiver {
-    void receiveMassage();
+    void receiveMassage() throws IOException;
 }

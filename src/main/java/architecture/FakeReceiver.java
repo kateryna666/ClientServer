@@ -9,8 +9,8 @@ import java.util.Random;
 
 public class FakeReceiver implements Receiver {
     public static Long pckId= 0L;
-    private final int MAXPRICE = 20000;
-    private final int MAXAMOUNT = 200;
+    private static final int MAXPRICE = 20000;
+    private static final int MAXAMOUNT = 200;
     public static String[] PRODUCTS = new String[]{
             "Apples",
             "Bananas",
@@ -24,7 +24,7 @@ public class FakeReceiver implements Receiver {
             "Meat"
     };
 
-    public byte[] generatePacket(){
+    public static byte[] generatePacket(){
         JSONObject json = new JSONObject();
         Command command = Command.values()[new Random().nextInt(PRODUCTS.length-1)];
         json.put("command", command.ordinal());
