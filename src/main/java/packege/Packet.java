@@ -10,7 +10,7 @@ public class Packet {
     private long bPktId;
     private int wLen;
     private short wCrc16;
-    private Message bMsg;
+    private Massage bMsg;
     private short wCrc16_2;
 
     public Packet(byte[] bytes){
@@ -24,13 +24,13 @@ public class Packet {
         this.bPktId = buffer.getLong();
         this.wLen = buffer.getInt();
         this.wCrc16 = buffer.getShort();
-        this.bMsg = new Message(buffer, wLen);
+        this.bMsg = new Massage(buffer, wLen);
         this.wCrc16_2 = buffer.getShort();
         if(makeCRC1()!=this.wCrc16&&makeCRC2()!=this.wCrc16_2) {
             throw new IllegalStateException();
         }
     }
-    public Packet(byte bSrc, long bPktId, Message bMsg){
+    public Packet(byte bSrc, long bPktId, Massage bMsg){
 
         this.bSrc = bSrc;
         this.bPktId = bPktId;
@@ -52,7 +52,7 @@ public class Packet {
         return bPktId;
     }
 
-    public Message getbMessage() {
+    public Massage getbMessage() {
         return bMsg;
     }
 
@@ -137,10 +137,6 @@ public class Packet {
                 Objects.equals(bMsg, packet.bMsg);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(bMagic, bSrc, bPktId, wLen, wCrc16, bMsg, wCrc16_2);
-    }
 
     @Override
     public String toString() {

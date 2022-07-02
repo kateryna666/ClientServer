@@ -6,14 +6,13 @@ import shop.Command;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Arrays;
-import java.util.Objects;
 
-public class Message {
+public class Massage {
     private int cType;
     private int bUserId;
     private byte[] message;
 
-    public Message(ByteBuffer buffer, int wLen) {
+    public Massage(ByteBuffer buffer, int wLen) {
         buffer.order(ByteOrder.BIG_ENDIAN);
         this.cType = buffer.getInt();
         this.bUserId = buffer.getInt();
@@ -21,7 +20,7 @@ public class Message {
         buffer.get(this.message, 0, wLen - Integer.BYTES * 2);
     }
 
-    public Message(int cType, int bUserId, byte[] message) {
+    public Massage(int cType, int bUserId, byte[] message) {
 
         this.cType = cType;
         this.bUserId = bUserId;
@@ -57,7 +56,7 @@ public class Message {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Message massage1 = (Message) o;
+        Massage massage1 = (Massage) o;
         return cType == massage1.cType &&
                 bUserId == massage1.bUserId &&
                 Arrays.equals(message, massage1.message);
@@ -75,7 +74,7 @@ public class Message {
     @Override
     public String toString() {
         JSONObject jsonObject = new JSONObject(new String(message));
-        return "Message{" +
+        return "Massage{" +
                 "cType=" + Command.values()[cType] +
                 ", bUserId=" + bUserId +
                 ", message=" + jsonObject.toString() +

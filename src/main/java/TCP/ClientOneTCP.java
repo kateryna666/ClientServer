@@ -63,7 +63,7 @@ public class ClientOneTCP extends Thread{
 
                 byte[] response = (byte[]) in.readObject();
                 Packet receivedPackage = new Packet(response);
-                System.out.println("FROM SERVER:\n"+ receivedPackage.toString());
+                System.out.println("FROM SERVER:\n"+ receivedPackage);
             }
         }
         catch (IOException e) {

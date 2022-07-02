@@ -1,6 +1,6 @@
 package architecture;
 import org.json.JSONObject;
-import packege.Message;
+import packege.Massage;
 import packege.Packet;
 import shop.Command;
 
@@ -51,7 +51,7 @@ public class FakeReceiver implements Receiver {
         try {
             synchronized (pckId) {
                 return PacketBuilder.cryption(new Packet((byte) new Random().nextInt(Byte.MAX_VALUE),
-                        pckId++, new Message(command.ordinal(),
+                        pckId++, new Massage(command.ordinal(),
                         new Random().nextInt(), json.toString().getBytes("utf-8"))).toByte(), true);
             }
         } catch (UnsupportedEncodingException e) {
