@@ -1,23 +1,25 @@
 package architecture;
-import Server.MyServer;
 import Server.ServerTCP;
 
+import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 public class ServerReceiver{
-    final static BlockingQueue<byte[]> queueBytes = new ArrayBlockingQueue<>(ServerTCP.CAPACITY);
-    byte[] potPackage;
+    final static BlockingQueue<AbstractMap.SimpleEntry<Integer, byte[]>> queueBytes = new ArrayBlockingQueue<>(ServerTCP.CAPACITY);
+    private byte[] potPackage;
+    private int userId;
 
-    public ServerReceiver(byte[] potPackage){
+    public ServerReceiver(int userId, byte[] potPackage){
         this.potPackage= potPackage;
+        this.userId = userId;
     }
     public void receiveMessage() {
             try {
                 synchronized (queueBytes) {
-                    queueBytes.put(this.potPackage);
+                    queueBytes.put(new AbstractMap.SimpleEntry<>(userId, this.potPackage));
                     System.out.println("Rec " + Arrays.toString(this.potPackage));
                 }
             } catch (InterruptedException e) {

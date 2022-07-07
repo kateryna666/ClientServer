@@ -19,22 +19,20 @@ public class ClientOneTCP extends Thread{
 
     public ClientOneTCP(InetAddress addr) throws InterruptedException {
         System.out.println("Запустимо клієнт з номером " + id);
-        for (int i = 0; i < MAX_TRIES; i++){
+
             try {
                 socket = new Socket(addr, ServerTCP.PORT);
-                break;
             }
             catch (IOException e) {
-                System.err.println("Не вдалося з'єднатися з сервером " + i);
+                System.err.println("Не вдалося з'єднатися з сервером ");
                 Thread.sleep(1000);
-                if (i == MAX_TRIES - 1){
-                    return;
-                }
             }
-        }
+
+
 
         try {
             out = new ObjectOutputStream(socket.getOutputStream());
+            //todo вирішити чого не виконується наступний рядок
             in = new ObjectInputStream(socket.getInputStream());
             this.start();
         }
@@ -55,14 +53,18 @@ public class ClientOneTCP extends Thread{
                 byte[] packet = FakeReceiver.generatePacket();
                 out.writeObject(packet);
                 out.flush();
+                System.out.println("Відправка клієнт");
                 byte[] response =(byte[]) in.readObject();
+                while (response==null){
+                    response =(byte[]) in.readObject();
+                }
                 Packet receivedPackage = new Packet(response);
                 System.out.println("FROM SERVER:\ncType: "+receivedPackage.getbMessage()
                         .toString());
             }
         }
         catch (IOException e) {
-            System.err.println("IO Exception");
+            System.err.println("IO ExceptionClient");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } finally {

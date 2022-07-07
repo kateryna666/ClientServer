@@ -3,25 +3,30 @@ package architecture;
 import Server.ServerTCP;
 import packege.Packet;
 
+import java.util.AbstractMap;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 public class Decryptor extends Thread{
-    final static BlockingQueue<Packet> queuePackets = new ArrayBlockingQueue<>(ServerTCP.CAPACITY);
+    final static BlockingQueue<AbstractMap.SimpleEntry<Integer, Packet>> queuePackets = new ArrayBlockingQueue<>(ServerTCP.CAPACITY);
+    private static boolean shutdown = false;
 
     public Decryptor(){ start();}
 
     public void decrypt(){
             try {
                 int i = 0;
-                while (true) {
+                while (!shutdown) {
                     try {
-                        byte[] bytes = ServerReceiver.queueBytes.poll(10L, TimeUnit.SECONDS);
-                        if(bytes !=null) {
+                        if(!ServerReceiver.queueBytes.isEmpty()) {
+                        AbstractMap.SimpleEntry<Integer, byte[]> ib= ServerReceiver.queueBytes.poll(10L, TimeUnit.SECONDS);
+                        int userId = ib.getKey();
+                        byte[] bytes = ib.getValue();
+
                             Packet packet = PacketBuilder.decode(bytes);
                             System.out.println("Dec " + (++i) + " " + packet);
-                            queuePackets.put(packet);
+                            queuePackets.put(new AbstractMap.SimpleEntry<>(userId, packet));
                         }
                     } catch (IllegalStateException | NumberFormatException e){
                         System.err.println("Fake package");
@@ -37,6 +42,11 @@ public class Decryptor extends Thread{
             }
         System.out.println("END OF DEC");
     }
+
+    public static void shutdown(){
+        shutdown = true;
+    }
+
     @Override
     public void run() {
         decrypt();
