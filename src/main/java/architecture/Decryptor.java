@@ -25,7 +25,7 @@ public class Decryptor extends Thread{
                         byte[] bytes = ib.getValue();
 
                             Packet packet = PacketBuilder.decode(bytes);
-                            System.out.println("Dec " + (++i) + " " + packet);
+                            //System.out.println("Dec " + (++i) + " " + packet);
                             queuePackets.put(new AbstractMap.SimpleEntry<>(userId, packet));
                         }
                     } catch (IllegalStateException | NumberFormatException e){

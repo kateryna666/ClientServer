@@ -33,7 +33,7 @@ public class Processor extends Thread{
 
                             Message message = packet.getbMessage();
                             Command command = Command.values()[message.getcType()];
-                            System.out.println("Pro " + (++i) + " " + command);
+                            //System.out.println("Pro " + (++i) + " " + command);
                             switch (command) {
                                 case PRODUCT_CREATE -> {
                                     JSONObject jsonObject = new JSONObject(new String(message.getMessage()));

@@ -31,11 +31,10 @@ public class Sender extends Thread {
                         if(im!=null) {
                             userId = im.getKey();
                             message = im.getValue();
-                            System.out.println("Send " + (++i) + " User " + ServerTCP.clientMap.get(userId) + " received " + Arrays.toString(message));
+                            //System.out.println("Send " + (++i) + " User " + ServerTCP.clientMap.get(userId) + " received " + Arrays.toString(message));
                             ObjectOutputStream out = ServerTCP.clientMap.get(userId);
                             out.writeObject(message);
                             out.flush();
-                            out.close();
                         }
 
                     }

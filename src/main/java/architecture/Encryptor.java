@@ -26,7 +26,7 @@ public class Encryptor extends Thread{
                     packet = ip.getValue();
 
                         queueCodedAnswers.put(new AbstractMap.SimpleEntry<>(userId, PacketBuilder.encode(packet)));
-                        System.out.println("Enc " + (++i));
+                        //System.out.println("Enc " + (++i));
                     }
                     if (Processor.queueProcessor.isEmpty()) Thread.sleep(100L);
                     //if (Processor.queueProcessor.isEmpty()) break;

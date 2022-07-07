@@ -19,8 +19,8 @@ public class ServerTCP extends Thread{
     private boolean shutdown = false;
     private ServerSocket serverSocket;
 
-    public static int PORT = 8082;
-    public static final int CAPACITY = 100;
+    public static int PORT = 8081;
+    public static final int CAPACITY = 100000;
 
     public static Map<Integer, ObjectOutputStream> clientMap = new ConcurrentHashMap<>();
     static Thread decryptor;
@@ -43,7 +43,6 @@ public class ServerTCP extends Thread{
 
         while (!shutdown) {
             try {
-                System.out.println("Serverok start".toUpperCase());
                 Socket socket = this.serverSocket.accept();
                 try {
                     new ServerOneTCP(socket);
@@ -57,7 +56,6 @@ public class ServerTCP extends Thread{
                 e.printStackTrace();
             }
         }
-        System.err.println("While ended".toUpperCase());
         try {
             serverSocket.close();
             Decryptor.shutdown();

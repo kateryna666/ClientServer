@@ -2,6 +2,7 @@ package Client;
 
 import Server.ServerTCP;
 import architecture.FakeReceiver;
+import architecture.PacketBuilder;
 import packege.Message;
 import packege.Packet;
 
@@ -22,6 +23,19 @@ public class ClientOneTCP extends Thread{
 
             try {
                 socket = new Socket(addr, ServerTCP.PORT);
+                try {
+                    out = new ObjectOutputStream(socket.getOutputStream());
+                    in = new ObjectInputStream(socket.getInputStream());
+                    this.start();
+                }
+                catch (IOException e) {
+                    try {
+                        socket.close();
+                    }
+                    catch (IOException e2) {
+                        System.err.println("Сокет не закрито");
+                    }
+                }
             }
             catch (IOException e) {
                 System.err.println("Не вдалося з'єднатися з сервером ");
@@ -30,20 +44,7 @@ public class ClientOneTCP extends Thread{
 
 
 
-        try {
-            out = new ObjectOutputStream(socket.getOutputStream());
-            //todo вирішити чого не виконується наступний рядок
-            in = new ObjectInputStream(socket.getInputStream());
-            this.start();
-        }
-        catch (IOException e) {
-            try {
-                socket.close();
-            }
-            catch (IOException e2) {
-                System.err.println("Сокет не закрито");
-            }
-        }
+
 
     }
 
@@ -53,13 +54,9 @@ public class ClientOneTCP extends Thread{
                 byte[] packet = FakeReceiver.generatePacket();
                 out.writeObject(packet);
                 out.flush();
-                System.out.println("Відправка клієнт");
                 byte[] response =(byte[]) in.readObject();
-                while (response==null){
-                    response =(byte[]) in.readObject();
-                }
-                Packet receivedPackage = new Packet(response);
-                System.out.println("FROM SERVER:\ncType: "+receivedPackage.getbMessage()
+                Packet receivedPackage = PacketBuilder.decode(response);
+                System.out.println("FROM SERVER:   "+receivedPackage.getbMessage()
                         .toString());
             }
         }

@@ -2,6 +2,7 @@ package architecture;
 
 import Client.ClientOneTCP;
 import Server.ServerTCP;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -9,14 +10,14 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 
 public class TCPtest {
-
+    static ServerTCP server;
     @Test
     void serverUsing() throws IOException, InterruptedException {
-        ServerTCP server = new ServerTCP();
+        server = new ServerTCP();
         server.start();
 
 
-        final int MAX_CLIENT_NUMBER = 5;
+        final int MAX_CLIENT_NUMBER = 200;
         long time = System.currentTimeMillis();
 
         ClientOneTCP[] clientOneTCPS= new ClientOneTCP[MAX_CLIENT_NUMBER];
@@ -28,7 +29,11 @@ public class TCPtest {
         clientOneTCPS[MAX_CLIENT_NUMBER -1].join();
 
 
-        System.out.println("Time = " + (System.currentTimeMillis() - time));
+        System.err.println("Time = " + (System.currentTimeMillis() - time));
+
+    }
+    @AfterAll
+    static void stopServer(){
         server.stops();
     }
 

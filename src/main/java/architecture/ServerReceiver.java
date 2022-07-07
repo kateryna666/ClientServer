@@ -20,7 +20,7 @@ public class ServerReceiver{
             try {
                 synchronized (queueBytes) {
                     queueBytes.put(new AbstractMap.SimpleEntry<>(userId, this.potPackage));
-                    System.out.println("Rec " + Arrays.toString(this.potPackage));
+                    //System.out.println("Rec " + Arrays.toString(this.potPackage));
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
