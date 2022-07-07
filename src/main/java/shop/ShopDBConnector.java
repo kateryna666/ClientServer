@@ -1,7 +1,5 @@
 package shop;
 
-import org.sqlite.SQLiteException;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +37,7 @@ public class ShopDBConnector {
         }
     }
 
-    public void insertGroup(String name) throws SQLiteException, SQLException {
+    public void insertGroup(String name) throws SQLException {
         PreparedStatement statement = con.prepareStatement(
                 "INSERT INTO 'ProductGroup'(GroupName) VALUES (?)");
 
@@ -49,7 +47,7 @@ public class ShopDBConnector {
         statement.close();
     }
 
-    public void insertProduct(String name, int amount, double price, String groupName) throws SQLiteException, SQLException {
+    public void insertProduct(String name, int amount, double price, String groupName) throws SQLException {
         PreparedStatement statement = con.prepareStatement("SELECT * FROM 'ProductGroup' WHERE GroupName = ?");
         statement.setString(1, groupName);
         ResultSet res = statement.executeQuery();
@@ -67,7 +65,7 @@ public class ShopDBConnector {
         statement.close();
     }
 
-    public Product readProduct(String name) throws SQLiteException, SQLException {
+    public Product readProduct(String name) throws SQLException {
         PreparedStatement statement = con.prepareStatement(
                 "SELECT * FROM Product WHERE ProductName = ?");
         statement.setString(1, name);
@@ -85,7 +83,7 @@ public class ShopDBConnector {
 
         return product;
     }
-    public ProductGroup readGroup(String name) throws SQLiteException, SQLException {
+    public ProductGroup readGroup(String name) throws SQLException {
         PreparedStatement statement = con.prepareStatement(
                 "SELECT * FROM ProductGroup WHERE GroupName = ?");
         statement.setString(1, name);
@@ -119,7 +117,7 @@ public class ShopDBConnector {
         statement.executeUpdate();
         statement.close();
     }
-    public void updateGroup(String oldName, String newName) throws SQLiteException, SQLException {
+    public void updateGroup(String oldName, String newName) throws SQLException {
 
         PreparedStatement statement = con.prepareStatement(
                 "UPDATE ProductGroup SET GroupName = ? WHERE GroupName = ?");
@@ -131,7 +129,7 @@ public class ShopDBConnector {
         statement.close();
     }
 
-    public void deleteGroup(String name) throws SQLiteException, SQLException {
+    public void deleteGroup(String name) throws SQLException {
         PreparedStatement statement = con.prepareStatement(
                 "DELETE FROM ProductGroup WHERE GroupName = ?;");
 
@@ -140,7 +138,7 @@ public class ShopDBConnector {
 
         statement.close();
     }
-    public void deleteProduct(String name) throws SQLiteException, SQLException {
+    public void deleteProduct(String name) throws SQLException {
         PreparedStatement statement = con.prepareStatement(
                 "DELETE FROM Product WHERE ProductName = ?");
 
@@ -148,61 +146,80 @@ public class ShopDBConnector {
         statement.executeUpdate();
         statement.close();
     }
-    public void deleteAllGroups() throws SQLiteException, SQLException {
+    public void deleteAllGroups() throws SQLException {
         PreparedStatement statement = con.prepareStatement("DELETE FROM ProductGroup");
         statement.executeUpdate();
 
         statement.close();
 
     }
-    public void deleteAllProducts() throws SQLiteException, SQLException {
+    public void deleteAllProducts() throws SQLException {
         PreparedStatement statement = con.prepareStatement("DELETE FROM Product");
         statement.executeUpdate();
 
         statement.close();
     }
 
-    public List<ProductGroup> groupListByCriteria(String attribute, String criteria, String value) throws SQLException {
-        String goodCriteria;
-        switch (criteria) {
-            case "=", ">", "<", "<=", ">=", "LIKE", "IN" -> goodCriteria = criteria;
-            default -> throw new IllegalStateException("Unexpected value: " + criteria);
-        }
-        PreparedStatement statement = con.prepareStatement("SELECT * FROM ProductGroup WHERE ?"+goodCriteria+" ?");
-        statement.setString(1, attribute);
-        statement.setString(2, value);
-        ResultSet res = statement.executeQuery();
+    public List<ProductGroup> groupListByCriteria(Criteria criteria) {
+        String where = null;
+        if(criteria.getName()!=null) { where = " name like '%" + criteria.getName() + "%' ";}
 
-        List<ProductGroup> list = new ArrayList<>();
+        List<ProductGroup> list =new ArrayList<>();
+        try {
+            Statement st = con.createStatement();
+            String sql = where.equals(null)
+                    ? "SELECT * FROM ProductGroup ;"
+                    : "SELECT * FROM ProductGroup WHERE " + where+ " ;";
 
-        while (res.next()) {
-            list.add( new ProductGroup(
-                    res.getInt("GroupID"),
-                    res.getString("GroupName")));
+            ResultSet res = st.executeQuery(sql);
+
+            while (res.next()) {
+                list.add(new ProductGroup(res.getInt("GroupID"),
+                        res.getString("GroupName"))
+                );
+            }
+            res.close();
+            st.close();
+
+        }catch(SQLException e){
+            System.out.println("Не вірний SQL запит на вибірку даних");
+            e.printStackTrace();
         }
         return list;
     }
 
-    public List<Product> productListByCriteria(String attribute, String criteria, String value) throws SQLException {
-        String goodCriteria;
-        switch (criteria) {
-            case "=", ">", "<", "<=", ">=", "LIKE", "IN" -> goodCriteria = criteria;
-            default -> throw new IllegalStateException("Unexpected value: " + criteria);
-        }
-        PreparedStatement statement = con.prepareStatement("SELECT * FROM Product WHERE ? "+goodCriteria+" ?");
-        statement.setString(1, attribute);
-        statement.setString(2, value);
-        ResultSet res = statement.executeQuery();
 
-        List<Product> list = new ArrayList<>();
+    public List<Product> productListByCriteria(Criteria criteria) {
+        List<String> criterias = new ArrayList();
+        if(criteria.getName()!=null) { criterias .add(" name like '%" + criteria.getName() + "%' ");}
+        if(criteria.getPriceFrom()!=null){ criterias .add(" price >=" + criteria.getPriceFrom());}
+        if(criteria.getPriceTill()!=null){ criterias .add(" price <=" + criteria.getPriceTill());}
+        if(criteria.getAmountFrom()!=null){ criterias .add(" amount >=" + criteria.getAmountFrom());}
+        if(criteria.getAmountTill()!=null){ criterias .add(" amount <=" + criteria.getAmountTill());}
+        String where = String.join(" and", criterias );
 
-        while (res.next()) {
-            list.add( new Product(res.getInt("ProductID"),
-                    res.getInt("GroupID"),
-                    res.getInt("ProductAmount"),
-                    res.getDouble("ProductPrice"),
-                    res.getString("ProductName"))
-            );
+        List<Product> list =new ArrayList<>();
+        try {
+            Statement st = con.createStatement();
+            String sql = criterias .isEmpty()
+                    ? "SELECT * FROM Product ;"
+                    : "SELECT * FROM Product WHERE " + where+" ;";
+
+            ResultSet res = st.executeQuery(sql);
+
+            while (res.next()) {
+                list.add(new Product(res.getInt("ProductID"),
+                        res.getInt("GroupID"),
+                        res.getInt("ProductAmount"),
+                        res.getDouble("ProductPrice"),
+                        res.getString("ProductName"))
+                );
+                res.close();
+                st.close();
+            }
+        }catch(SQLException e){
+            System.out.println("Не вірний SQL запит на вибірку даних");
+            e.printStackTrace();
         }
         return list;
     }

@@ -14,6 +14,7 @@ public class Main {
         connector.insertGroup("Tomato");
         connector.updateGroup("Tomato","SuperTomato");
         System.out.println(connector.readGroup("SuperTomato"));
-        System.out.println(connector.groupListByCriteria("GroupName", "=", "'Fruits'"));
+        connector.insertProduct("Juice", 10, 20, "SuperTomato" );
+        //System.out.println(connector.productListByCriteria("GroupID", "<", 100));
     }
 }
