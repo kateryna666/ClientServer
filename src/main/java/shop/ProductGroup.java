@@ -2,12 +2,10 @@ package shop;
 
 public class ProductGroup {
     private int id;
-    private static int statId = 1;
     private String name;
 
-    public ProductGroup(String name) {
-        this.id = statId;
-        statId++;
+    public ProductGroup(int id, String name) {
+        this.id = id;
         this.name = name;
     }
 

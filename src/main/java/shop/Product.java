@@ -2,19 +2,21 @@ package shop;
 
 public class Product {
     private int id;
-    private static int statId = 1;
-    private int group_id;
-    private int amount = 0;
-    private int prise = 0;
+    private int groupId;
+    private int amount;
+    private double prise;
     private String name;
 
-    public Product(int group_id, String name){
-        this.id = statId;
-        statId++;
-        this.group_id = group_id;
-        this.name = name;
 
+
+    public Product(int id, int groupId, int amount, double prise, String name) {
+        this.id = id;
+        this.groupId = groupId;
+        this.amount = amount;
+        this.prise = prise;
+        this.name = name;
     }
+
 
     public int getId() {
         return id;
@@ -24,12 +26,12 @@ public class Product {
         this.id = id;
     }
 
-    public int getGroup_id() {
-        return group_id;
+    public int getGroupId() {
+        return groupId;
     }
 
-    public void setGroup_id(int group_id) {
-        this.group_id = group_id;
+    public void setGroupId(int groupId) {
+        this.groupId = groupId;
     }
 
     public int getAmount() {
@@ -40,11 +42,11 @@ public class Product {
         this.amount = amount;
     }
 
-    public int getPrise() {
+    public double getPrise() {
         return prise;
     }
 
-    public void setPrise(int prise) {
+    public void setPrise(double prise) {
         this.prise = prise;
     }
 
@@ -60,7 +62,7 @@ public class Product {
     public String toString() {
         return "Product{" +
                 "id=" + id +
-                ", group_id=" + group_id +
+                ", groupId=" + groupId +
                 ", amount=" + amount +
                 ", prise=" + prise +
                 ", name='" + name + '\'' +

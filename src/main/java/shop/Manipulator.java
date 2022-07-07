@@ -1,8 +1,6 @@
 package shop;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Objects;
 
 public class Manipulator {
@@ -17,17 +15,17 @@ public class Manipulator {
     }
 
     public static void addProduct(String productName, String toGroup) {
-        if (findGroup(toGroup)==null)
+        /*if (findGroup(toGroup)==null)
             addGroup(toGroup);
         if (findProduct(productName)==null)
-            products.add(new Product(findGroup(toGroup).getId(), productName));
+            products.add(new Product(findGroup(toGroup).getId(), productName));*/
         //System.out.println(Arrays.toString(groups.toArray()));
         //System.out.println(Arrays.toString(products.toArray()));
     }
 
     public static void addGroup(String groupName) {
-        if (findGroup(groupName) == null)
-            groups.add(new ProductGroup(groupName));
+        /*if (findGroup(groupName) == null)
+            groups.add(new ProductGroup(groupName));*/
         //System.out.println(Arrays.toString(groups.toArray()));
         //System.out.println(Arrays.toString(products.toArray()));
     }
